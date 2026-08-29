@@ -1,0 +1,526 @@
+/**
+ * Additions to the Bronx template — never redefinitions of its design.
+ *
+ * Everything here exists because a React reimplementation introduced an
+ * element the static template did not have (a select, a validation message,
+ * a numbered process marker), or because an interaction that jQuery handled
+ * inline now needs a class to hang off.
+ */
+
+/* ── Preloader ─────────────────────────────────────────────── */
+.preloader-wrap {
+  transition: opacity 1s ease;
+}
+
+.preloader-wrap.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* The template loaded a 1.7 MB GIF here; the name carries the beat instead. */
+.preloader-wrap .loader {
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preloader-mark {
+  font-family: var(--font_instrument), sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #ffffff;
+  white-space: nowrap;
+  animation: preloader-pulse 1.6s ease-in-out infinite;
+}
+
+.preloader-mark em {
+  font-style: normal;
+  opacity: 0.45;
+  margin-left: 0.4em;
+}
+
+@keyframes preloader-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+/* ── Magic cursor: pointer devices only ────────────────────── */
+@media (hover: none), (pointer: coarse) {
+  #magic-cursor {
+    display: none;
+  }
+}
+
+/* ── Body lock while the popup menu is open ────────────────── */
+body.menu-open {
+  overflow: hidden;
+}
+
+/* Native cursor stays available — the ball augments it, never replaces it. */
+
+/* ── Process markers (template used tool logos here) ───────── */
+.favourite-stack-box-left .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.process-index {
+  font-family: var(--font_instrument), sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ── FAQ: replaces the Line Awesome icon font (external CDN) ─ */
+.faq-icon {
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  margin-left: 16px;
+  flex: none;
+}
+
+.accordion-collapse[hidden] {
+  display: none;
+}
+
+/* ── Philosophy sign-off (template used a signature image) ─── */
+.motivation-signature {
+  font-family: var(--font_instrument), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-top: 32px;
+}
+
+/* ── Form additions ────────────────────────────────────────── */
+/* The template had no <select>; match its input treatment exactly. */
+.contact-form #ajax-form select {
+  font-weight: 500;
+  font-size: 16px;
+  font-family: var(--font_instrument), sans-serif;
+  line-height: 1.4em;
+  padding: 24px;
+  border-radius: 10px;
+  border: none;
+  width: 100%;
+  appearance: none;
+  background-color: rgb(245, 245, 247);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23888' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 24px center;
+}
+
+.dark-mode .contact-form #ajax-form select {
+  color: #ffffff;
+  background-color: rgb(15, 15, 15);
+}
+
+.contact-form #ajax-form .input-group-split {
+  display: flex;
+  gap: 16px;
+}
+
+.contact-form #ajax-form .input-group-split > span {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.contact-form #ajax-form .field-error {
+  font-family: var(--font_instrument), sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 8px 0 0;
+  color: #ff8a5c;
+}
+
+.contact-form #ajax-form #result {
+  font-family: var(--font_instrument), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  min-height: 1.2em;
+}
+
+.contact-form #ajax-form #result.is-success {
+  color: #7fd6a2;
+}
+
+.contact-form #ajax-form #result.is-error {
+  color: #ff8a5c;
+}
+
+.contact-form #ajax-form .theme-btn2:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Honeypot: off-screen rather than display:none, so bots still fill it. */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ────────────────────────────────────────────────────────────
+   VIDEO IN IMAGE SLOTS
+
+   A manifest slot holding a film renders a <video>, and the template
+   only ever sized `img`. These mirror its image rules — including the
+   card's hover zoom — so a film and a still are interchangeable in any
+   slot without touching layout.
+   ──────────────────────────────────────────────────────────── */
+.featured-card .img-box video,
+.featured-card .img-box img,
+.full-image-box video,
+.about-bottom-content-wrap .img-box video,
+.experience-popup-img video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.featured-card .img-box video {
+  transition: 0.5s;
+}
+
+.featured-card:hover .img-box video {
+  transform: scale(1.1);
+}
+
+/* ── Partner strip: non-interactive, so drop the link affordance ── */
+.partner-sec .partner-box {
+  display: block;
+}
+
+/* ── Reduced motion: ScrollSmoother never mounts, so guarantee flow ── */
+@media (prefers-reduced-motion: reduce) {
+  #smooth-wrapper,
+  #smooth-content {
+    position: static !important;
+    transform: none !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .preloader-mark {
+    animation: none;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────
+   SCROLL CONTAINER SAFETY
+
+   The template pins `main.bronx-main` to the viewport with
+   `position: fixed; overflow: hidden` and relies entirely on
+   ScrollSmoother to move the content inside it. When the smoother does
+   not run — reduced motion, or JS unavailable — the page cannot scroll
+   at all.
+
+   So the unpinned state is the default here, and the template's fixed
+   state is restored only once ScrollSmoother has actually mounted. The
+   template already does exactly this below 809px.
+   ──────────────────────────────────────────────────────────── */
+main.bronx-main {
+  position: relative;
+  inset: auto;
+  height: auto;
+  overflow: visible;
+}
+
+/* Desktop only: below 809px the template itself keeps `.bronx-main` in normal
+   flow, and re-pinning it here broke scrolling on touch devices entirely. */
+@media (min-width: 810px) {
+  html.smoother-active main.bronx-main {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────
+   HEADING LEVELS
+
+   Section titles are <h2> so the document runs h1 → h2 → h3 without
+   skipping a level. The template styled them by tag, so its h3 rules
+   are mirrored onto h2 here — same values, no visual change.
+   ──────────────────────────────────────────────────────────── */
+.section-header h2 {
+  font-size: 90px;
+  letter-spacing: -2.3px;
+  line-height: 80px;
+  font-weight: 700;
+  /* No colour here: this file loads after dark-mode.css, so declaring the
+     template's light-mode `--dark` would beat `.dark-mode h2` and render the
+     heading near-black on black. */
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section-header h2 span {
+  line-height: 80px;
+  display: block;
+  overflow: hidden;
+}
+
+.favourite-stack-sec .left h2,
+.experience2-sec .left h2,
+.motivation-sec .left h2 {
+  font-size: 50px;
+  letter-spacing: -0.8px;
+  font-weight: 700;
+  line-height: 57px;
+  margin: 0;
+}
+
+.experience2-sec .left h2 {
+  position: sticky;
+  top: 0;
+}
+
+.about-sec .section-header2 h2 span {
+  overflow: hidden;
+}
+
+@media (max-width: 1439px) {
+  .favourite-stack-sec .left h2,
+  .experience2-sec .left h2,
+  .motivation-sec .left h2 {
+    font-size: 30px;
+    letter-spacing: -0.8px;
+    line-height: 30px;
+  }
+}
+
+@media (max-width: 809px) {
+  .section-header h2 {
+    font-size: 40px;
+    letter-spacing: -1.3px;
+    line-height: 30px;
+  }
+
+  .section-header h2 span {
+    line-height: 30px;
+  }
+
+  .favourite-stack-sec .left h2,
+  .experience2-sec .left h2,
+  .motivation-sec .left h2 {
+    font-size: 40px;
+    letter-spacing: -0.8px;
+    line-height: 40px;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────
+   TARGET SIZE (WCAG 2.2 SC 2.5.8 — 24 × 24 CSS px minimum)
+   ──────────────────────────────────────────────────────────── */
+.hero-sec .hero-footer-wrap .hero-footer-right .link-with-line,
+.copyright #back-to-top {
+  display: inline-block;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+/* ── Reduced motion: the smoother never mounts, so guarantee flow ── */
+@media (prefers-reduced-motion: reduce) {
+  main.bronx-main {
+    position: relative !important;
+    inset: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────
+   SUB-HEADING LEVELS
+
+   Card and entry titles are <h3> under their section's <h2>, and the two
+   elements that were only styled as headings (the About lead statement,
+   the process discipline line) are now paragraphs. The template styled
+   all of these by tag, so its h4 rules are mirrored here — same values.
+   ──────────────────────────────────────────────────────────── */
+.about-bottom-content-wrap .about-bottom-content .lead-statement {
+  font-family: var(--font_instrument), sans-serif;
+  font-weight: 700;
+  margin: 0;
+  font-size: 30px;
+  letter-spacing: 0;
+  line-height: 40px;
+}
+
+.experience-box h3 {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font_instrument), sans-serif;
+  gap: 18px;
+  margin: 0;
+}
+
+.experience-box h3 > span {
+  letter-spacing: 2.4px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.experience-box h3 > span:last-child {
+  font-size: 30px;
+  letter-spacing: -0.2px;
+  line-height: 26px;
+  color: #1d1d1f;
+  margin: 0;
+  font-weight: 700;
+}
+
+.dark-mode .experience-box h3 > span:last-child {
+  color: #ffffff;
+}
+
+.experience2-box .experience2-box-body h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 22px;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+  margin: 0;
+  font-family: var(--font_instrument), sans-serif;
+  font-weight: 700;
+}
+
+.favourite-stack-box .content h3 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 24px;
+  margin: 0;
+}
+
+.favourite-stack-box .content .content-body .stack-meta {
+  font-size: 20px;
+  letter-spacing: 0.2px;
+  margin: 0;
+  line-height: 20px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-family: var(--font_instrument), sans-serif;
+}
+
+.contact-form h3 {
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 0 0 24px;
+  font-family: var(--font_instrument), sans-serif;
+}
+
+@media (max-width: 1439px) {
+  .about-bottom-content-wrap .about-bottom-content .lead-statement br {
+    display: none;
+  }
+}
+
+@media (max-width: 809px) {
+  .about-bottom-content-wrap .about-bottom-content .lead-statement {
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  .about-bottom-content-wrap .about-bottom-content .lead-statement br {
+    display: block;
+  }
+
+  .favourite-stack-box .content .content-body .stack-meta,
+  .experience2-box .experience2-box-body h3 {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}
+
+/* <picture> wraps the full-bleed frame, so it needs the box's own sizing. */
+.full-image-box picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ────────────────────────────────────────────────────────────
+   DARK-MODE GAP IN THE TEMPLATE
+
+   The template's own dark-mode.css has the rule that darkens these
+   surfaces commented out (dark-mode.css lines 117-124), so they kept
+   their light-mode `#f5f5f7` background — light cards carrying white
+   text. Restored here with the values the commented block used.
+   ──────────────────────────────────────────────────────────── */
+.dark-mode .experience-box,
+.dark-mode .favourite-stack-box,
+.dark-mode .experience-popup .experience-popup-content-wrap {
+  border-color: #1d1d1d;
+  background: #0a0a0a;
+}
+
+/* The popup's own copy sits on that dark panel now. */
+.dark-mode .experience-popup .experience-popup-content-wrap .experience-popup-features h4 {
+  color: #ffffff;
+}
+
+/* ────────────────────────────────────────────────────────────
+   PARTNER MARQUEE
+
+   Orglife's client logos are white-on-transparent, so the template's
+   light card both hid them and read as a row of blank tiles. The logos
+   float directly on the page instead.
+   ──────────────────────────────────────────────────────────── */
+.dark-mode .partner-box {
+  background: transparent;
+  border: 0;
+}
+
+.partner-sec ul li {
+  width: 200px;
+  height: 140px;
+}
+
+.partner-box .partner-box-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.partner-box .partner-box-inner img {
+  width: auto;
+  height: auto;
+  max-width: 160px;
+  max-height: 90px;
+  object-fit: contain;
+  opacity: 0.7;
+  transition: opacity 0.4s ease;
+}
+
+.partner-box:hover .partner-box-inner img {
+  opacity: 1;
+}

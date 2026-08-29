@@ -1,0 +1,134 @@
+/**
+ * Minimal reboot + the handful of Bootstrap utilities the Bronx template
+ * actually uses. The full bootstrap.min.css (155 KB) provided only `row`,
+ * `text-right`, `pt-30` and the accordion classes to this page; the accordion
+ * is reimplemented in React, so the rest is not shipped.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body {
+  margin: 0;
+  text-align: left;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd {
+  margin: 0 0 0.5rem;
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+img, svg, video {
+  vertical-align: middle;
+  max-width: 100%;
+}
+
+img, video {
+  height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-transform: none;
+  -webkit-appearance: button;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* ── Bootstrap utilities the template markup relies on ── */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.pt-30 {
+  padding-top: 30px;
+}
+
+/* ── Accessibility ── */
+:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  left: 24px;
+  top: 24px;
+  background: #ffffff;
+  color: #000000;
+  padding: 12px 20px;
+  font-family: var(--font_instrument), sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Reduced motion: hold the composition, drop the movement ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
