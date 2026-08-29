@@ -30,7 +30,7 @@ export const site = {
   /** TODO: set NEXT_PUBLIC_SITE_URL to the production domain before deploying. */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
 
-  availability: 'AVAILABLE FOR COMMISSIONS',
+  availability: 'OPEN FOR CREATIVE ENGAGEMENTS',
   disciplinePrimary: 'AI FILMMAKER',
   disciplineSecondary: '+ CREATIVE DIRECTOR',
 } as const
