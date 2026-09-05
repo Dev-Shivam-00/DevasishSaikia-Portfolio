@@ -30,6 +30,13 @@ export const site = {
   /** TODO: set NEXT_PUBLIC_SITE_URL to the production domain before deploying. */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
 
+  /**
+   * Google Analytics measurement ID. Public by design — it ships in the client
+   * bundle either way, so it lives in config rather than in an env secret.
+   * Set NEXT_PUBLIC_GA_ID to point a deployment at a different property.
+   */
+  analyticsId: process.env.NEXT_PUBLIC_GA_ID ?? 'G-Z1890HB3HW',
+
   availability: 'OPEN FOR CREATIVE ENGAGEMENTS',
   disciplinePrimary: 'AI FILMMAKER',
   disciplineSecondary: '+ CREATIVE DIRECTOR',

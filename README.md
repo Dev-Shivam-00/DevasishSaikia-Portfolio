@@ -76,6 +76,25 @@ generic error, so the response never reveals whether SMTP is configured. The
 honeypot is answered with a success response so bots learn nothing, and an
 in-process limiter caps a client at 8 submissions per 10 minutes.
 
+## Analytics
+
+Google Analytics (gtag.js) via `next/script`, wired in `components/analytics/`.
+The measurement ID lives in `data/site.ts` — it is public by design, since it
+ships in the client bundle either way — and `NEXT_PUBLIC_GA_ID` overrides it to
+point a deployment at a different property.
+
+Both scripts load `afterInteractive`, so the tag never competes with the hero
+reel for bandwidth, and **it only loads in production builds** — `npm run dev`
+would otherwise report your local page views into the live property. To check
+the tag on your own machine use `npm run build && npm start`, not `npm run dev`.
+
+The site is one page with hash anchors and no client-side routing, so the
+automatic pageview on load is the whole story; there is no route-change
+listener to maintain.
+
+GA sets a first-party `_ga` cookie. If the site starts drawing meaningful EU
+traffic that needs a consent banner before the tag fires — none is implemented.
+
 ## Notes on robustness
 
 - **Scrolling.** The template pins `main.bronx-main` with

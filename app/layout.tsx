@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Instrument_Sans, Inter_Tight } from 'next/font/google'
 import { site } from '@/data/site'
 import { buildStructuredData } from '@/lib/structured-data'
+import { Analytics } from '@/components/analytics/Analytics'
 
 // The template's own type system, loaded through next/font instead of a
 // render-blocking Google Fonts <link>.
@@ -109,6 +110,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           // Built from a fixed object in lib/structured-data.ts — no user input.
           dangerouslySetInnerHTML={{ __html: buildStructuredData() }}
         />
+        <Analytics />
       </body>
     </html>
   )
