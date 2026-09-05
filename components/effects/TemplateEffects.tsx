@@ -126,6 +126,59 @@ export function TemplateEffects() {
         )
       })
 
+      /* ── In-page anchors ──────────────────────────────────────
+         Native hash navigation scrolls ScrollSmoother's #smooth-wrapper —
+         it is overflow:hidden, but anchors and focus still scroll it — while
+         the smoother's own transform stays at 0. The page then sits on the
+         target with dead space below it and cannot be scrolled back up.
+         So drive the smoother instead, and convert any native wrapper scroll
+         that slips through (keyboard focus, find-in-page) into a real one. */
+      const wrapper = document.getElementById('smooth-wrapper')
+
+      const scrollToHash = (hash: string, smooth: boolean): boolean => {
+        if (!smoother || hash.length < 2) return false
+        let target: Element | null = null
+        try {
+          target = document.querySelector(hash)
+        } catch {
+          return false
+        }
+        if (!target) return false
+        if (wrapper) wrapper.scrollTop = 0
+        smoother.scrollTo(target, smooth)
+        return true
+      }
+
+      const onAnchorClick = (event: MouseEvent) => {
+        if (!smoother) return
+        if (event.defaultPrevented || event.button !== 0) return
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+
+        const link = (event.target as Element | null)?.closest?.('a[href]')
+        const href = link?.getAttribute('href')
+        if (!href || !href.startsWith('#')) return
+
+        if (scrollToHash(href, true)) {
+          event.preventDefault()
+          window.history.pushState(null, '', href)
+        }
+      }
+
+      const onWrapperScroll = () => {
+        if (!wrapper || !smoother || wrapper.scrollTop === 0) return
+        const slipped = wrapper.scrollTop
+        wrapper.scrollTop = 0
+        smoother.scrollTop(smoother.scrollTop() + slipped)
+      }
+
+      document.addEventListener('click', onAnchorClick)
+      wrapper?.addEventListener('scroll', onWrapperScroll)
+
+      // A shared link like /#contact lands mid-page the same way.
+      if (window.location.hash) {
+        gsap.delayedCall(0.35, () => scrollToHash(window.location.hash, false))
+      }
+
       /* ── Back to top (themescroll.js) ── */
       const backToTop = document.getElementById('back-to-top')
       if (backToTop) {
@@ -135,9 +188,16 @@ export function TemplateEffects() {
           else gsap.to(window, { scrollTo: 0 })
         }
         backToTop.addEventListener('click', onClick)
-        return () => backToTop.removeEventListener('click', onClick)
+        return () => {
+          backToTop.removeEventListener('click', onClick)
+          document.removeEventListener('click', onAnchorClick)
+          wrapper?.removeEventListener('scroll', onWrapperScroll)
+        }
       }
-      return undefined
+      return () => {
+        document.removeEventListener('click', onAnchorClick)
+        wrapper?.removeEventListener('scroll', onWrapperScroll)
+      }
     })
 
     // Sections mount with images still loading; refresh once they settle.

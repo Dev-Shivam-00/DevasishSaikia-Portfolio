@@ -97,6 +97,14 @@ traffic that needs a consent banner before the tag fires — none is implemented
 
 ## Notes on robustness
 
+- **In-page anchors.** Native hash navigation scrolls ScrollSmoother's
+  `#smooth-wrapper` — it is `overflow: hidden`, but anchors and keyboard focus
+  still scroll it — while the smoother's own transform stays at 0. The page then
+  sits on the target with dead space below and cannot be scrolled back up.
+  `TemplateEffects` drives the smoother for `#` links instead, and converts any
+  native wrapper scroll that slips through (focus, find-in-page) into a real
+  one. Mobile and reduced motion have no smoother, so native anchors run
+  untouched there.
 - **Scrolling.** The template pins `main.bronx-main` with
   `position: fixed; overflow: hidden` and depends entirely on ScrollSmoother to
   move content inside it — so with JS unavailable or reduced motion on, the page
